@@ -12,58 +12,69 @@ fpsClock = pygame.time.Clock()
 
 font = pygame.font.SysFont('Arial', 20)
 
-class Head:  
-  def head():
-    head = pygame.draw.circle(window,(0,255,0),[200,50],50,0)
-    return head
-  def eyes():
-    left_eye = pygame.draw.circle(window,(0,0,255),[225,50],5,0)
-    right_eye = pygame.draw.circle(window,(0,0,255),[175,50],5,0)
-    return left_eye,right_eye
-  def neck():
-    neck = pygame.draw.rect(window,(255,0,0),[190,100,20,10],0)
-    return neck
-  
-  def nose():
-    nose = pygame.draw.polygon(window, (255, 0, 0),[[200, 50], [190, 60],[210, 60]])
-    return nose
+class Head:
 
-  def mouth():
-    mouth = pygame.draw.rect(window,(0,0,2),[190,70,20,10],0)
-    return mouth
+  def head():
+    global head
+    head = pygame.image.load('head1.png')
+    head = pygame.transform.scale(head, (100,100))
+    head = window.blit(head, (200,0))
+    return head
+  def rotate_head(head,angle):
+    angle = 60    
+    loc = head.get_rect().center 
+    rot_sprite = pygame.transform.rotate(head, angle)
+    rot_sprite.get_rect().center = loc
+    return rot_sprite
+
+
  
   
 class Body:
 
   def body():
-    body = pygame.draw.rect(window,(0,0,2),[130,110,140,150],0)
+    body = pygame.image.load('body.png')
+    body = pygame.transform.scale(body, (150,200))
+    body = window.blit(body, (175,95))
     return body
 
 class Legs:  
   def legs():
-    left_leg = pygame.draw.rect(window,(0,0,255),[155,260,25,150],0)
-    right_leg = pygame.draw.rect(window,(0,0,255),[225,260,25,150],0)
-    return left_leg,right_leg
+    left_leg = pygame.image.load('leg2.png')
+    left_leg = pygame.transform.scale(left_leg, (55,230))
+    right_leg = pygame.image.load('leg1.png')
+    right_leg = pygame.transform.scale(right_leg, (55,230))
+    right_leg = window.blit(right_leg,(180,260))
+    left_leg = window.blit(left_leg, (270,260))
+    return left_leg, right_leg
 
 class Hands:
-  def right_hand():
-    right_hand = pygame.draw.rect(window,(0,0,255),[110,110,20,75],0)
-    right_elbow = pygame.draw.rect(window,(0,0,200),[110,185,20,75],0)
-    return right_hand, right_elbow
-  def left_hand():
-    left_hand = pygame.draw.rect(window,(0,0,255),[270,110,20,75],0)
-    left_elbow = pygame.draw.rect(window,(0,0,200),[270,185,20,75],0)
-    return left_hand, left_elbow
+  def arms():
+    left_arm = pygame.image.load('left_arm.png')
+    left_arm = pygame.transform.scale(left_arm, (30,80))
+    right_arm = pygame.image.load('right_arm.png')
+    right_arm = pygame.transform.scale(right_arm, (30,80))
+    right_arm = window.blit(right_arm,(150,120))
+    left_arm = window.blit(left_arm, (320,120))
+    return left_arm, right_arm
 
-class Robot():  
-    head = Head.head()
-    mouth = Head.mouth()
-    nose = Head.nose()    
-    eyes = Head.eyes()
-    neck = Head.neck()
-    body = Body.body()
-    hands = Hands.left_hand() and Hands.right_hand()    
+  def elbow():
+    left_elbow = pygame.image.load('elbow1.png')
+    left_elbow = pygame.transform.scale(left_elbow, (30,90))
+    right_elbow = pygame.image.load('elbow2.png')
+    right_elbow = pygame.transform.scale(right_elbow, (30,90))
+    right_elbow = window.blit(right_elbow,(150,200))
+    left_elbow = window.blit(left_elbow, (320,200))
+    return left_elbow, right_elbow
+
+
+class Robot():        
     legs = Legs.legs()
+    hands = Hands.arms() and Hands.elbow()
+    body = Body.body()
+    head = Head.head()
+    
+ 
 
 objects = []
 class Button():
@@ -117,15 +128,15 @@ class Button():
         ])
         window.blit(self.buttonSurface, self.buttonRect)
 
-def myFunction():
-    print('Animated')
+def animate():
+    pass
 
 
 
 
 
-AnimateButton = Button(400, 500, 150, 80, 'Animate', myFunction)
-ClapButton = Button(620, 500, 150, 80, 'Clap', myFunction, True)
+AnimateButton = Button(400, 500, 150, 80, 'Animate', animate())
+ClapButton = Button(620, 500, 150, 80, 'Clap', animate(), True)
 robot = Robot()
 pygame.display.update()
 pygame.display.flip()
